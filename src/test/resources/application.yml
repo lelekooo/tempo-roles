@@ -1,0 +1,40 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: false
+        show_sql: false
+  boot.admin.client.enabled: false
+  cloud:
+    openfeign:
+      micrometer:
+        enabled: false
+
+management:
+  tracing.sampling.probability: 0.0
+  zipkin:
+    tracing:
+      enabled: false
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    ROOT: INFO
+    org.springframework.web: TRACE
+
+external-api:
+  team.url: http://localhost:8081/teams
+  user.url: http://localhost:8081/users
+
+tempo.defaultRoleId: "1770f8f4-e117-4d87-85a3-60173ddd352f"

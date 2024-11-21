@@ -1,0 +1,46 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
+        show_sql: false
+  boot.admin.client.url: http://localhost:8080
+  cloud:
+    openfeign:
+      micrometer:
+        enabled: true
+management:
+  endpoints.web.exposure.include: '*'
+  info.env.enabled: true
+  tracing.sampling.probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_HOST:http://localhost:9411/api/v2/spans}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    ROOT: INFO
+#    org.hibernate.SQL: debug
+#    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+external-api:
+  team.url: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams
+  user.url: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/users
+
+tempo.defaultRoleId: "1770f8f4-e117-4d87-85a3-60173ddd352f"
